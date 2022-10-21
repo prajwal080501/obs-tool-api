@@ -1,20 +1,26 @@
 import mongoose from "mongoose"
 import express from "express"
 import dotenv from 'dotenv'
+import teacherROutes from './routes/teachers.js'
+import {body, validationResult} from 'express-validator'
 
 const app = express();
 
 
+app.use(express.json());
 
 dotenv.config()
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-    res.send("Hello World");
-}, (err) => {
-    console.log(err);
-});
+// app.get("/", (req, res) => {
+//     res.send("Hello World");
+// }, (err) => {
+//     console.log(err);
+// });
+
+app.use('/teachers', 
+teacherROutes)
 
 function connectToDatabase() {
     mongoose.connect(process.env.MONGODB_URI, {

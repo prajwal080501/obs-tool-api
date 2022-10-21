@@ -8,7 +8,11 @@ const TeacherSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: "Description is required"
+        
     },
     image: String,
 });
+
+const Teacher = mongoose.model("Teacher", TeacherSchema);
+
+export default Teacher;
