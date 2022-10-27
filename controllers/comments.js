@@ -1,33 +1,33 @@
 
-import { validationResult } from 'express-validator';
+import { validationResult, body } from 'express-validator';
+import Comment from "../models/Comments.js";
+import User from "../models/User.js";
 
-
-export const CreateComment = async (req, res) => {
+export const addComment = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
-    else{
-    const { comment, user, post } = req.body
-    try {
-        let comment = await Comment.findOne({ comment });
-        if (comment) {
-            return res.status(400).json({ errors: [{ msg: "Comment already exists" }] })
+    else {
+        console.log(req.user)
+        try {
+            const { comment, postId, userId } = req.body
+            let user = await User.findOne({ _id: userId });
+            if (!user) {
+                return res.status(400).json({ errors: [{ msg: "User not found" }] })
+            }
+            let newComment = new Comment({
+                comment,
+                postId,
+                userId
+            })
+            await newComment.save();
+            res.json(newComment);
         }
-        comment = new Comment({
-            comment,
-            user,
-            post
-        })
-        await comment.save();
-        res.json({
-            comment,
-            "message":`comment created by ${user}`
-        });
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).send("Server error");
+        catch (err) {
+            console.log(err);
+            res.status(500).send("Server error");
+        }
     }
 }
-}
+

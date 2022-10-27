@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import { body, validationResult } from 'express-validator'
 import authRoutes from './routes/auth.js'
 import commentRoutes from './routes/comments.js'
+import postRoutes from "./routes/post.js";
 const app = express();
 
 
@@ -24,6 +25,8 @@ app.use('/users',
 
 app.use('/comments',
     commentRoutes)
+
+app.use('/posts', postRoutes)
 
 function connectToDatabase() {
     mongoose.connect(process.env.MONGODB_URI, {

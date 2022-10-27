@@ -1,16 +1,16 @@
 import mongoose from "mongoose";
+const ObjectId = mongoose.Schema.Types.ObjectId;
+
 
 const CommentSchema = new mongoose.Schema({
-    text: {
+    comment: {
         type: String,
-        required: "Text is required"
+        required: "Comment is required"
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+    user: {type: Schema.Types.ObjectId, ref: 'User'},
+}, {timestamps:true});
+
+
+const Comment = mongoose.model("Comment", CommentSchema);
+
+export default Comment;
