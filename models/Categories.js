@@ -10,5 +10,4 @@ const CategorySchema = new mongoose.Schema({
         required: "Description is required"
     },
     image: String,
-   
 });
