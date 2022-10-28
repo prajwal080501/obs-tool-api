@@ -20,7 +20,7 @@ const UserSchema = new mongoose.Schema({
         options: ["teacher", "admin"],
         default: "teacher"
     },
-});
+}, {timestamps: true});
 
 const User = mongoose.model("User", UserSchema);
 

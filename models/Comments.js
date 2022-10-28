@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-const ObjectId = mongoose.Schema.Types.ObjectId;
 
 
 const CommentSchema = new mongoose.Schema({
@@ -7,7 +6,6 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         required: "Comment is required"
     },
-    user: {type: Schema.Types.ObjectId, ref: 'User'},
 }, {timestamps:true});
 
 

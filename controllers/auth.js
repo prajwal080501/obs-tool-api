@@ -10,7 +10,9 @@ import { validationResult } from 'express-validator';
 export const Login = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({
+            errors: errors.array()
+        });
     }
     else {
         try {
@@ -28,17 +30,12 @@ export const Login = async (req, res) => {
                     id: user.id
                 }
             }
-            jwt.sign(payload, process.env.JWT_SECRET, {
-                expiresIn: 360000
-            }, (err, token) => {
-                if (err) throw err;
-                res.json({
-                    token,
-                    "message": `user logged in by ${user.name} and role is ${user.role}`
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 })
 
-                })
-            })
-            console.log("User logged in");
+
+            res.cookie("token", token, {
+             httpOnly: true
+            }).sendStatus(200);
         }
         catch (err) {
             console.log(err);
@@ -81,7 +78,7 @@ export const Register = async (req, res) => {
                 if (err) throw err;
                 res.json({ token })
             })
-                    
+
         }
         catch (err) {
             console.log(err);
