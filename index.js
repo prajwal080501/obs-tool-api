@@ -5,6 +5,7 @@ import { body, validationResult } from 'express-validator'
 import authRoutes from './routes/auth.js'
 import commentRoutes from './routes/comments.js'
 import userRoutes from './routes/user.js'
+import videoRoutes from "./routes/video.js"
 import cookieParser from 'cookie-parser'
 const app = express();
 
@@ -27,7 +28,8 @@ app.use('/users',
     authRoutes)
 
 
-    app.use('/users', userRoutes);
+app.use('/users', userRoutes);
+app.use('/videos', videoRoutes);
 
 app.use('/comments',
     commentRoutes)
