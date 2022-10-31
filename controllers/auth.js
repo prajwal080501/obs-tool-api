@@ -16,12 +16,11 @@ export const Login = async (req, res) => {
     }
     else {
         try {
-            const { email, password } = req.body
-            let user = await User.findOne({ email }).select("+password");
+            let user = await User.findOne({ email: req.body.email });
             if (!user) {
                 return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] })
             }
-            const isMatch = await bcrypt.compare(password, user.password);
+            const isMatch = await bcrypt.compare(req.body.password, user.password);
             if (!isMatch) {
                 return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] })
             }
@@ -31,11 +30,11 @@ export const Login = async (req, res) => {
                 }
             }
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 })
-
-
+            const { password, ...others } = user._doc;
             res.cookie("token", token, {
              httpOnly: true
-            }).sendStatus(200);
+            }).status(200).json(others)
+
         }
         catch (err) {
             console.log(err);
@@ -47,7 +46,10 @@ export const Login = async (req, res) => {
 export const Register = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        // display only msg parameter from errors
+        return res.status(400).json({
+            errors: errors.array().map((error) => error.msg)
+        });
     }
     else {
         let { name, email, password, role } = req.body

@@ -1,13 +1,19 @@
 import mongoose from "mongoose";
 
-
 const CommentSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true,
+    },
+    videoId: {
+        type: String,
+        required: true,
+    },
     comment: {
         type: String,
-        required: "Comment is required"
-    },
-}, {timestamps:true});
-
+        required: true,
+    }
+}, {timestamps: true});
 
 const Comment = mongoose.model("Comment", CommentSchema);
 

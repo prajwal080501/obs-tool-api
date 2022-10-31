@@ -4,9 +4,13 @@ import dotenv from 'dotenv'
 import { body, validationResult } from 'express-validator'
 import authRoutes from './routes/auth.js'
 import commentRoutes from './routes/comments.js'
+import userRoutes from './routes/user.js'
+import cookieParser from 'cookie-parser'
 const app = express();
 
 
+
+app.use(cookieParser());
 app.use(express.json());
 
 dotenv.config()
@@ -21,6 +25,9 @@ app.get("/", (req, res) => {
 
 app.use('/users',
     authRoutes)
+
+
+    app.use('/users', userRoutes);
 
 app.use('/comments',
     commentRoutes)
