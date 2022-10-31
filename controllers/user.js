@@ -10,6 +10,16 @@ export const remove = async (req, res) => {
     res.status(200).json(removedUser);
 }
 
-    export const getUser = async (req, res) => {
+    export const getUsers = async (req, res) => {
+    if(req.params.id === "all"){
+        const users = await User.find({});
+        res.status(200).json(users);
     }
+}
+
+export const getUser = async (req, res) => {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+}
+
 

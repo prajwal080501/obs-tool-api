@@ -11,7 +11,9 @@ export const Login = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({
-            errors: errors.array()
+            Status: "Error",
+            Code: 400, 
+            errors: errors.array().map((error) => error.msg)
         });
     }
     else {
@@ -48,6 +50,8 @@ export const Register = async (req, res) => {
     if (!errors.isEmpty()) {
         // display only msg parameter from errors
         return res.status(400).json({
+            Status: "Error",
+            Code: 400, 
             errors: errors.array().map((error) => error.msg)
         });
     }
@@ -60,7 +64,7 @@ export const Register = async (req, res) => {
             }
             // check if user entered role else assign the default role
             if (!role) {
-                role = "user"
+                role = "teacher"
             }
             user = new User({
                 name,

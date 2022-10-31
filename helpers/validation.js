@@ -8,5 +8,6 @@ export const validateRegisterRequest = [
 
 export const validateLoginRequest = [
     body("email", "Please enter a valid email").isEmail(),
-    body("password", "Password is required").exists()
+    body("password", "Password is required").exists(),
+    body("password", "Please enter a password, it cant be empty").not().isEmpty()
 ];

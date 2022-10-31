@@ -1,4 +1,4 @@
-import {update, remove, getUser} from '../controllers/user.js'
+import {update, remove, getUsers, getUser } from '../controllers/user.js'
 import express from 'express'
 import { verifyToken } from '../helpers/verifyToken.js';
 
@@ -9,6 +9,8 @@ router.put('/:id', verifyToken, update);
 
 router.delete('/:id', verifyToken, remove);
 
-router.get('/find/:id', verifyToken, getUser);
+router.get('/find/:id', verifyToken, getUsers);
+
+router.get('/:id', verifyToken, getUser);
 
 export default router;
