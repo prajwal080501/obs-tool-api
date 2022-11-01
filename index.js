@@ -31,8 +31,7 @@ app.use('/users',
 app.use('/users', userRoutes);
 app.use('/videos', videoRoutes);
 
-app.use('/comments',
-    commentRoutes)
+app.use('/comments',commentRoutes)
 
 
 function connectToDatabase() {

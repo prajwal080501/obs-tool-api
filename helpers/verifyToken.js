@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-
+import User from "../models/User.js";
 export const verifyToken = (req, res, next) => {
 
     const token = req.cookies.token;
@@ -24,24 +24,3 @@ export const verifyToken = (req, res, next) => {
     }
 }
 
-export const verifyAdmin = (req, res, next) => {
-    if (req.user.role !== "admin") {
-        return res.status(401).json({ errors: [{ msg: "Not authorized" }] })
-    }
-    next();
-}
-
-export const verifyUser = (req, res, next) => {
-    if (req.user.role !== "user") {
-        return res.status(401).json({ errors: [{ msg: "Not authorized" }] })
-    }
-    next();
-}
-
-export const verifyAdminOrUser = (req, res, next) => {
-
-    if (req.user.role !== "admin" && req.user.role !== "user") {
-        return res.status(401).json({ errors: [{ msg: "Not authorized" }] })
-    }
-    next();
-}   

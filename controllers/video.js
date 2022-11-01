@@ -3,15 +3,25 @@ import Video from "../models/Video.js";
 import User from "../models/User.js";
 export const addVideo = async (req, res) => {
     try {
-
-        
-        const newVideo = new Video({
+        const user = await User.findById(req.user.user.id);
+        if(user.role === "teacher"){
+             const newVideo = new Video({
             userId: req.user.user.id,
             ...req.body
         });
         const video = await newVideo.save();
         res.status(200).json(video);
+        }
+        else{
+            res.status(401).json({
+                status: 'failed',
+                code: 401,
+                message: 'Unauthorized to add a video'
+            })
+        }
+
     }
+
     catch (err) {
         console.log(err);
         res.status(500).json({ errors: [{ msg: "Server error" }] })
@@ -19,41 +29,44 @@ export const addVideo = async (req, res) => {
 }
 
 export const updateVideo = async (req, res) => {
-try {
-    const video = await Video.findById(req.params.id);
-    if(!video) {
-        res.status(404).json({
-            status: "Error",
-            code: 404,
-            msg: "Video not found"});
-    }
-    if (video.userId === req.user.id) {
-        const updatedVideo = await Video.findByIdAndUpdate(req.params.id, req.body, {new: true});
-        res.status(200).json(updatedVideo);
+    try {
+        const video = await Video.findById(req.params.id);
+        if (!video) {
+            res.status(404).json({
+                status: "Error",
+                code: 404,
+                msg: "Video not found"
+            });
+        }
+        if (video.userId === req.user.user.id) {
+            const updatedVideo = await Video.findByIdAndUpdate(req.params.id, req.body, { new: true });
+            res.status(200).json(updatedVideo);
 
+        }
+        else {
+            res.status(403).json({
+                status: "Error",
+                code: 403,
+                message: "You can only update your video"
+            });
+        }
+    } catch (error) {
+        res.status(500).json(error);
     }
-    else {
-        res.status(403).json({
-            status: "Error",
-            code: 403,
-            message: "You can only update your video"
-        });
-    }
-} catch (error) {
-    res.status(500).json(error);
-}
 }
 
 export const deleteVideo = async (req, res) => {
     try {
+        console.log(req.user);
         const video = await Video.findById(req.params.id);
-        if(!video) {
+        if (!video) {
             res.status(404).json({
                 status: "Error",
                 code: 404,
-                msg: "Video not found"});
+                msg: "Video not found"
+            });
         }
-        if (video.userId === req.user.id) {
+        if (video.userId === req.user.user.id) {
             const deletedVideo = await Video.findByIdAndDelete(req.params.id);
             res.status(200).json(deletedVideo);
         }
@@ -67,17 +80,18 @@ export const deleteVideo = async (req, res) => {
     } catch (error) {
         res.status(500).json(error);
     }
-    
+
 }
 
 export const getVideo = async (req, res) => {
     try {
         const video = await Video.findById(req.params.id);
-        if(!video) {
+        if (!video) {
             res.status(404).json({
                 status: "Error",
                 code: 404,
-                msg: "Video not found"});
+                msg: "Video not found"
+            });
         }
         res.status(200).json(video);
     } catch (error) {
