@@ -6,7 +6,7 @@ const router = express.Router();
 router.post("/addvideo", verifyToken, addVideo);
 router.delete("/deletevideo/:id", verifyToken, deleteVideo);
 router.put("/updatevideo/:id", verifyToken, updateVideo);
-router.get("/getvideos", verifyToken, getVideos);
+router.get("/getvideos",getVideos);
 router.get("/getvideo/:id", verifyToken, getVideo);
 
 
