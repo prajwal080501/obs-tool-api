@@ -14,7 +14,7 @@ const app = express();
 app.use(cors({
     origin: '*',
     credentials: true
-    }));
+}));
 
 app.use(cookieParser());
 app.use(express.json());
@@ -36,7 +36,7 @@ app.use('/users',
 app.use('/users', userRoutes);
 app.use('/videos', videoRoutes);
 
-app.use('/comments',commentRoutes)
+app.use('/comments', commentRoutes)
 
 
 function connectToDatabase() {
