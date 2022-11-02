@@ -7,6 +7,7 @@ export const addVideo = async (req, res) => {
         if(user.role === "teacher"){
              const newVideo = new Video({
             userId: req.user.user.id,
+            uploadedBy: user.name,
             ...req.body
         });
         const video = await newVideo.save();

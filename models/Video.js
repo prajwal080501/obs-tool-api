@@ -5,6 +5,9 @@ const VideoSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    uploadedBy: {
+        type: String,
+    },
     title: {
         type: String,
         required: true,

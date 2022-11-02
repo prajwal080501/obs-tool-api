@@ -4,7 +4,10 @@ export const verifyToken = (req, res, next) => {
 
     const token = req.cookies.token;
     if (!token) {
-        return res.status(401).json({ errors: [{ msg: "Not authorized" }] })
+        return res.status(401).json({ errors: [{ 
+            status: "Error",
+            code: 401,
+            msg: "Not authorized" }] })
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
