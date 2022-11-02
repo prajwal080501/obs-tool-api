@@ -90,9 +90,7 @@ export const getVideo = async (req, res) => {
 export const getVideos = async (req, res) => {
     try {
         const videos = await Video.find({});
-        res.json(createError('Success', 200, 'All videos', videos));
         return res.status(200).json(videos);
-        // -
     } catch (error) {
         res.status(500).json(createError('Failed', 500, 'Server Error', null));
     }
