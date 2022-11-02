@@ -11,3 +11,15 @@ export const validateLoginRequest = [
     body("password", "Password is required").exists(),
     body("password", "Please enter a password, it cant be empty").not().isEmpty()
 ];
+
+
+export const validateVideoRequest = [
+    body("title", "Title is required").not().isEmpty(),
+    body("description", "Description is required").not().isEmpty(),
+    body("videoUrl", "Url is required").not().isEmpty(),
+    body("videoUrl", "Please enter a valid url").isURL(),
+];
+
+export const validateComment = [
+    body("comment", "Comment is required").not().isEmpty(),
+];

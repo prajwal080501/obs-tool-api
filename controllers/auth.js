@@ -3,6 +3,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import User from "../models/User.js"
+import {createError} from "../helpers/createError.js"
 dotenv.config()
 import { validationResult } from 'express-validator';
 
@@ -10,21 +11,19 @@ import { validationResult } from 'express-validator';
 export const Login = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({
-            Status: "Error",
-            Code: 400, 
-            errors: errors.array().map((error) => error.msg)
-        });
+        res.json(createError('Failed', 400, errors.array().map((error) => {
+            return error.msg
+        }) , null));
     }
     else {
         try {
             let user = await User.findOne({ email: req.body.email });
             if (!user) {
-                return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] })
+                res.json(createError('Failed', 400, 'Invalid credentials', null));
             }
             const isMatch = await bcrypt.compare(req.body.password, user.password);
             if (!isMatch) {
-                return res.status(400).json({ errors: [{ msg: "Invalid Credentials" }] })
+                 res.json(createError('Failed', 400, 'Invalid Credentials', null));
             }
             const payload = {
                 user: {
@@ -35,13 +34,13 @@ export const Login = async (req, res) => {
             const { password, ...others } = user._doc;
             res.cookie("token", token, {
              httpOnly: true
-            }).status(200).json(others)
-            console.log(user.id);
+            //  add token to other
+            }).json(createError('Success', 200, 'Login Successful', others));
 
         }
         catch (err) {
             console.log(err);
-            res.status(500).send("Server error");
+            res.json(createError('Failed', 500, 'Server Error', null));
         }
     }
 }
@@ -50,18 +49,14 @@ export const Register = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         // display only msg parameter from errors
-        return res.status(400).json({
-            Status: "Error",
-            Code: 400, 
-            errors: errors.array().map((error) => error.msg)
-        });
+       res.json(createError('Failed', 400, errors.array()[0].msg, null));
     }
     else {
         let { name, email, password, role } = req.body
         try {
             let user = await User.findOne({ email });
             if (user) {
-                return res.status(400).json({ errors: [{ msg: "User already exists" }] })
+                res.json(createError('Failed', 400, 'User already exists', null));
             }
             // check if user entered role else assign the default role
             if (!role) {
@@ -89,7 +84,7 @@ export const Register = async (req, res) => {
         }
         catch (err) {
             console.log(err);
-            res.status(500).send("Server error");
+            res.json(createError('Failed', 500, 'Server Error', null));
         }
     }
 }
