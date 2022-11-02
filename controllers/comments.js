@@ -26,7 +26,7 @@ export const deleteComment = async (req, res) => {
                 msg: "Comment not found"
             });
         }
-        if (comment.userId === req.user.user.id || video.userId === req.user.user.id) { 
+        if (comment.userId === req.user.user.id || video.userId === req.user.user.id) {
             const deletedComment = await Comments.findByIdAndDelete(req.params.id);
             res.status(200).json(deletedComment);
         }
@@ -72,7 +72,7 @@ export const updateComment = async (req, res) => {
 }
 
 export const getComments = async (req, res) => {
-//    get comments for a video
+    //    get comments for a video
     try {
         const comments = await Comments.find({ videoId: req.params.id });
         res.status(200).json(comments);
