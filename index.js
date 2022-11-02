@@ -7,9 +7,14 @@ import commentRoutes from './routes/comments.js'
 import userRoutes from './routes/user.js'
 import videoRoutes from "./routes/video.js"
 import cookieParser from 'cookie-parser'
+import cors from 'cors'
+
 const app = express();
 
-
+app.use(cors({
+    origin: '*',
+    credentials: true
+    }));
 
 app.use(cookieParser());
 app.use(express.json());

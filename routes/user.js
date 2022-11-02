@@ -11,6 +11,6 @@ router.delete('/:id', verifyToken, remove);
 
 router.get('/find/:id', verifyToken, getUsers);
 
-router.get('/:id', verifyToken, getUser);
+router.get('/find/:id', verifyToken, getUser);
 
 export default router;
