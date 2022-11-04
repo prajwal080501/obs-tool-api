@@ -5,6 +5,12 @@ const CommentSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    category: {
+        type: String,
+    },
+    commentBy: {
+        type: String,
+    },
     videoId: {
         type: String,
         required: true,

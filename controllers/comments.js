@@ -1,11 +1,18 @@
 import Comments from '../models/Comments.js';
 import Video from '../models/Video.js';
+import Category from '../models/Category.js';
 import { createError } from '../helpers/createError.js';
+import User from './../models/User.js';
 export const addComment = async (req, res) => {
 
     try {
+        const category = await Category.findById(req.body.categoryId);
+        const user = await User.findById(req.user.user.id);
+        console.log(user);
         const newComment = new Comments({
             userId: req.user.user.id,
+            category: category.name,
+            commentBy: user.name,
             ...req.body
         });
         const comment = await newComment.save();
