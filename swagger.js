@@ -33,22 +33,84 @@ export const options = {
                     tags: ['Login'],
                     summary: 'Api for logging in a existing user',
                     description: 'This is a login route',
-                    parameters: [
-                        {
-                            name: 'email',
-                            in: 'body',
-                            description: 'Email of the user',
-                            required: true,
-                            type: 'string'
-                        },
-                        {
-                            name: 'password',
-                            in: 'body',
-                            description: 'Password of the user',
-                            required: true,
-                            type: 'string'
+                    requestBody: {
+                        content: {
+                            'application/json': {
+                                // add email and password as required
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        email: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        password: {
+                                            type: 'string',
+                                            required: true
+                                        }
+                                    }
+                                }
+                            }
                         }
-                    ],
+                    },
+                    responses: {
+                        '200': {
+                            description: 'User logged in successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    token: {
+                                                        type: 'string'
+                                                    },
+                                                    user: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            name: {
+                                                                type: 'string'
+                                                            },
+                                                            email: {
+                                                                type: 'string'
+                                                            },
+                                                            role: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
 
                 }
             },
@@ -57,6 +119,92 @@ export const options = {
                     tags: ['Register'],
                     summary: 'Api for registering a new user',
                     description: 'This is a register route',
+                    requestBody: {
+                        content: {
+                            'application/json': {
+                                // add email and password as required
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        name: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        email: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        password: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        role: {
+                                            type: 'string',
+                                            required: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses: {
+                        '200': {
+                            description: 'User registered successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    token: {
+                                                        type: 'string'
+                                                    },
+                                                    user: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            name: {
+                                                                type: 'string'
+                                                            },
+                                                            email: {
+                                                                type: 'string'
+                                                            },
+                                                            role: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            },
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     parameters: [
                         {
                             name: 'name',
@@ -89,11 +237,95 @@ export const options = {
                     ],
                 }
             },
-            '/users/:id': {
+            '/users/{id}': {
                 put: {
                     tags: ['Update User'],
                     summary: 'Api for updating a user',
                     description: 'This is a update route',
+                    requestBody: {
+                        content: {
+                            'application/json': {
+                                // add email and password as required
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        name: {
+                                            type: 'string',
+                                            required: false
+                                        },
+                                        email: {
+                                            type: 'string',
+                                            required: false
+                                        },
+                                        role: {
+                                            type: 'string',
+                                            required: false
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    respponses: {
+                        '200': {
+                            description: 'User updated successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    token: {
+                                                        type: 'string'
+                                                    },
+                                                    user: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            name: {
+                                                                type: 'string',
+                                                            },
+                                                            email: {
+                                                                type: 'string'
+                                                            },
+                                                            role: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            }
+
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                            },
+                                        },
+                                    }
+                                }
+                            }
+                    },
                     parameters: [
                         {
                             name: 'name',
@@ -110,6 +342,84 @@ export const options = {
                     tags: ['Add Video'],
                     summary: 'Api for adding a new video',
                     description: 'This is a add video route',
+                    requestBody: {
+                        content: {
+                            'application/json': {
+                                // add email and password as required
+                                schema: {
+                                    type: 'object',
+                                    properties: {
+                                        title: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        description: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                        videoUrl: {
+                                            type: 'string',
+                                            required: true
+                                        },
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses: {
+                        '200': {
+                            description: 'Video added successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    video: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            title: {
+                                                                type: 'string'
+                                                            },
+                                                            description: {
+                                                                type: 'string'
+                                                            },
+                                                            videoUrl: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     parameters: [
                         {
                             name: 'userId',
