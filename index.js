@@ -11,7 +11,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import swaggerJSdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
-
+import {options} from './swagger.js'
 
 const app = express();
 
@@ -30,43 +30,12 @@ dotenv.config()
 
 const PORT = process.env.PORT || 5000;
 
-const options = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: ' Observation API',
-            version: '1.0.0',
-            description: 'A classroom observation API',
-            contact: {
-                name: 'Classroom Observation API',
-                email: '',
-                version: '1.0.0'
-            },
-            servers: [{
-                url: 'http://localhost:8000'
-            },
 
-            ]
-        },
-
-
-    },
-    apis: ['./routes/*.js']
-}
 
 const swaggerSpec = swaggerJSdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-/** 
- * @swagger
- * /:
- * get:
- *  summary: Get the homepage
- * description: Get the homepage
- * responses:
- * 200:
- * description: A successful response
- */
+
 app.get("/", (req, res) => {
     res.send("Hello World");
 }, (err) => {

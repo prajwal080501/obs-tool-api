@@ -11,6 +11,7 @@ router.post("/addcategory", [
 ], createCategory);
 
 router.get("/getcategory/:id", getCategory);
+router.get("/getcategories", getCategory);
 
 
 export default router;

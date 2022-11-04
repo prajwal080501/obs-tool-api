@@ -6,7 +6,6 @@ import { validationResult } from "express-validator";
 export const addVideo = async (req, res) => {
     try {
         const user = await User.findById(req.user.user.id);
-        console.log(category);
         if (user.role === "teacher") {
             const newVideo = new Video({
                 userId: req.user.user.id,

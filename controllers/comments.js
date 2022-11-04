@@ -94,3 +94,13 @@ export const replyComment = async (req, res) => {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
+
+export const getCommentsByCategory = async (req, res) => {
+    //    get comments for a category
+    try {
+
+    }
+    catch (error) {
+        res.json(createError('Failed', 500, 'Server Error', null));
+    }
+}
