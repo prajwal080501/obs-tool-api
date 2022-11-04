@@ -7,16 +7,19 @@ export const options = {
             version: '1.0.0',
             description: 'A classroom observation API',
             contact: {
-                name: 'Classroom Observation API',
-                email: '',
-                version: '1.0.0'
+                "name": "API Support",
+                "url": "http://www.example.com/support",
+                "email": "support@example.com"
             },
             servers: [{
                 url: 'http://localhost:8000'
             },
             ]
         },
+
         paths: {
+            // add a title as auth apis 
+
             '/': {
                 post: {
                     tags: ['Base'],
@@ -24,6 +27,7 @@ export const options = {
                     description: 'This is a base route',
                 }
             },
+
             '/users/login': {
                 post: {
                     tags: ['Login'],
