@@ -65,3 +65,25 @@ export const getComments = async (req, res) => {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
+
+
+export const replyComment = async (req, res) => {
+    //    reply to a comment
+    try {
+        const comment = await Comments.findById(req.params.id);
+        if (!comment) {
+            res.json(createError('Failed', 400, 'Comment not found', null));
+        }
+        const newComment = new Comments({
+            userId: req.user.user.id,
+            videoId: comment.videoId,
+            replyTo: req.params.id,
+            ...req.body
+        });
+        const reply = await newComment.save();
+        res.json(createError('Success', 200, 'Reply added successfully', reply));
+    }
+    catch (error) {
+        res.json(createError('Failed', 500, 'Server Error', null));
+    }
+}

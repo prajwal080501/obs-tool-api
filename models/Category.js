@@ -7,7 +7,9 @@ const CategorySchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: "Description is required"
     },
-    image: String,
 });
+
+const Category = mongoose.model("Category", CategorySchema);
+
+export default Category;

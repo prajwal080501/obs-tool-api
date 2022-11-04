@@ -2,7 +2,7 @@
 import Video from "../models/Video.js";
 import User from "../models/User.js";
 import { createError } from "../helpers/createError.js";
-import { validationResult } from "express-validator";
+import { validationResult } from "express-validator";   
 export const addVideo = async (req, res) => {
     try {
         const user = await User.findById(req.user.user.id);
