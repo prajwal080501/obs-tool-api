@@ -315,16 +315,16 @@ export const options = {
                                                                 type: 'number'
                                                             }
 
-                                                            }
                                                         }
                                                     }
                                                 }
+                                            }
 
-                                            },
                                         },
-                                    }
+                                    },
                                 }
                             }
+                        }
                     },
                     parameters: [
                         {

@@ -90,3 +90,9 @@ export const Register = async (req, res) => {
 }
 
 
+export const logout = async (req, res) => {
+    res.clearCookie("token").json(createError('Success', 200, 'Logged out successfully', null));
+}
+
+
+

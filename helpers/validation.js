@@ -22,4 +22,6 @@ export const validateVideoRequest = [
 
 export const validateComment = [
     body("comment", "Comment is required").not().isEmpty(),
+    body("videoId", "VideoId is required").not().isEmpty(),
+    body("categoryId", "Category is required").not().isEmpty(),
 ];

@@ -3,20 +3,27 @@ import Video from '../models/Video.js';
 import Category from '../models/Category.js';
 import { createError } from '../helpers/createError.js';
 import User from './../models/User.js';
+import { body, validationResult } from "express-validator";
 export const addComment = async (req, res) => {
 
     try {
-        const category = await Category.findById(req.body.categoryId);
-        const user = await User.findById(req.user.user.id);
-        console.log(user);
-        const newComment = new Comments({
-            userId: req.user.user.id,
-            category: category.name,
-            commentBy: user.name,
-            ...req.body
-        });
-        const comment = await newComment.save();
-        res.json(createError('Success', 200, 'Comment added successfully', comment));
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.json(createError(400, 'Failed to add comment', errors.array().map(error => error.msg), null));
+        }
+        else {
+            const category = await Category.findById(req.body.categoryId);
+            const user = await User.findById(req.user.user.id);
+            console.log(user);
+            const newComment = new Comments({
+                userId: req.user.user.id,
+                category: category.name,
+                commentBy: user.name,
+                ...req.body
+            });
+            const comment = await newComment.save();
+            res.json(createError('Success', 200, 'Comment added successfully', comment));
+        }
     } catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
@@ -75,25 +82,35 @@ export const getComments = async (req, res) => {
 
 
 export const replyComment = async (req, res) => {
-    //    reply to a comment
     try {
         const comment = await Comments.findById(req.params.id);
-        if (!comment) {
-            res.json(createError('Failed', 400, 'Comment not found', null));
-        }
+        const user = await User.findById(req.user.user.id);
         const newComment = new Comments({
             userId: req.user.user.id,
-            videoId: comment.videoId,
-            replyTo: req.params.id,
+            category: comment.category,
+            commentBy: user.name,
+            replyTo: comment._id,
             ...req.body
         });
         const reply = await newComment.save();
         res.json(createError('Success', 200, 'Reply added successfully', reply));
+    } catch (error) {
+
+    }
+}
+
+
+export const getRepliesForComment = async (req, res) => {
+    //    get replies for a comment
+    try {
+        const replies = await Comments.find({ replyTo: req.params.id });
+        res.json(createError('Success', 200, 'Replies fetched successfully', replies));
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
+
 
 export const getCommentsByCategory = async (req, res) => {
     //    get comments for a category
