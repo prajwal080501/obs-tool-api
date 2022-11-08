@@ -24,5 +24,10 @@ export const validateComment = [
     body("comment", "Comment is required").not().isEmpty(),
     body("videoId", "VideoId is required").not().isEmpty(),
     body("categoryId", "Category is required").not().isEmpty(),
-    body("rating", "Rating is required").not().isEmpty(),
+];
+
+
+export const validateForgetPassword = [
+    body("email", "Please enter a valid email").isEmail(),
+    body("email").isEmpty().withMessage("Email is required"),
 ];

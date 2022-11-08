@@ -12,6 +12,7 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import swaggerJSdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
+import webpush from "web-push"
 import { options } from './swagger.js'
 
 
@@ -84,6 +85,16 @@ io.on('connection', (socket) => {
     })
 }
 )
+const privateVapidKey = "FFThIFKsimwq00FU-f3tKP5fDCIRgXfrruOcSZap--Q"
+const publicVapidKey = "BI18JfwP0NUMt50W5orhGMzLKh7Wy5_fvbwBU92sGBma91yYNNbeTcGcujRrJsIBoYzcuqVILPR7SktG2MPSUeU";
+
+webpush.setVapidDetails(
+    "mailto:praju.ladkat@gmai.com",
+    publicVapidKey,
+    privateVapidKey
+
+)
+
 
 
 

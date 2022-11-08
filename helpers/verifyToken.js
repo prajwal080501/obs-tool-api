@@ -27,3 +27,9 @@ export const verifyToken = (req, res, next) => {
     }
 }
 
+
+
+export const verifyForgetPasswordToken = (req, res) => {
+    const token = req.query;
+    res.send(token);
+}

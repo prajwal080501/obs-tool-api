@@ -3,6 +3,7 @@ import Video from '../models/Video.js';
 import Category from '../models/Category.js';
 import { createError } from '../helpers/createError.js';
 import User from './../models/User.js';
+import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
 export const addComment = async (req, res) => {
 
@@ -19,11 +20,12 @@ export const addComment = async (req, res) => {
                 userId: req.user.user.id,
                 category: category.name,
                 commentBy: user.name,
-                rating: user.role === 'coach' ? req.body.rating : res.json(createError(400, 'Failed to add rating', 'Only admin can rate', null)),
+                rating: user.role === 'coach' ? req.body.rating : null,
                 ...req.body
             });
             const comment = await newComment.save();
             res.json(createError('Success', 200, 'Comment added successfully', comment));
+
         }
     } catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));

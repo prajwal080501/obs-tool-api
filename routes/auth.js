@@ -1,7 +1,8 @@
 import express from "express";
 import {body, validationResult} from "express-validator";
-import  {Login, Register}  from "../controllers/auth.js";
-import {validateRegisterRequest, validateLoginRequest} from "../helpers/validation.js";
+import  {forgetPassword, Login, Register, resetPassword}  from "../controllers/auth.js";
+import {validateRegisterRequest, validateLoginRequest, validateForgetPassword} from "../helpers/validation.js";
+import { verifyForgetPasswordToken } from "../helpers/verifyToken.js";
 
 const router = express.Router();
 
@@ -16,6 +17,9 @@ router.get("/logout", (req, res) => {
     res.json({message: "Logged out successfully"});
 });
 
-
+// forget password
+router.put("/forget-password", validateForgetPassword, forgetPassword);
+router.put("/reset-password/:token", resetPassword);
+router.get("/verifytoken", verifyForgetPasswordToken)
 
 export default router;
