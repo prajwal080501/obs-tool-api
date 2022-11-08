@@ -19,6 +19,7 @@ export const addComment = async (req, res) => {
                 userId: req.user.user.id,
                 category: category.name,
                 commentBy: user.name,
+                rating: user.role === 'coach' ? req.body.rating : res.json(createError(400, 'Failed to add rating', 'Only admin can rate', null)),
                 ...req.body
             });
             const comment = await newComment.save();
@@ -121,3 +122,16 @@ export const getCommentsByCategory = async (req, res) => {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
+
+// get all comments with replies for a video and display the comments and display the comments and the replies below the comment in respective order
+// export const getCommentsWithReplies = async (req, res) => {
+//     try {
+//         const comments = await Comments.find({ videoId: req.params.id, replyTo: null });
+//         console.log(comments);
+//         const replies = await Comments.find({ videoId: req.params.id, replyTo: { $ne: null } });
+//         console.log(replies);
+//     }
+//     catch (error) {
+//         res.json(createError('Failed', 500, 'Server Error', null));
+//     }
+// }

@@ -20,6 +20,10 @@ const UserSchema = new mongoose.Schema({
         options: ["teacher", "admin"],
         default: "teacher"
     },
+    notifications: {
+        type: Array,
+        default: []
+    },
 }, {timestamps: true});
 
 const User = mongoose.model("User", UserSchema);

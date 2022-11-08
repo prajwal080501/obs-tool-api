@@ -16,10 +16,8 @@ export const options = {
             },
             ]
         },
-
         paths: {
             // add a title as auth apis 
-
             '/': {
                 post: {
                     tags: ['Base'],
@@ -235,6 +233,72 @@ export const options = {
                             type: 'string'
                         }
                     ],
+                }
+            },
+            // logout route
+            '/users/logout': {
+                get: {
+                    tags: ['Logout'],
+                    summary: 'Api for logging out a user',
+                    description: 'This is a logout route',
+                    responses: {
+                        '200': {
+                            description: 'User logged out successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    token: {
+                                                        type: 'string'
+                                                    },
+                                                    user: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            name: {
+                                                                type: 'string'
+                                                            },
+                                                            email: {
+                                                                type: 'string'
+                                                            },
+                                                            role: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            },
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             '/users/{id}': {
@@ -459,7 +523,8 @@ export const options = {
                     ],
                 }
             },
-            '/videos/deletevideo': {
+            //    route for deleting a video
+            '/videos/deletevideo/{id}': {
                 delete: {
                     tags: ['Delete Video'],
                     summary: 'Api for deleting a video',
@@ -467,12 +532,67 @@ export const options = {
                     parameters: [
                         {
                             name: 'id',
-                            in: 'body',
+                            in: 'path',
                             description: 'Id of the video',
                             required: true,
                             type: 'string'
-                        },
+                        }
                     ],
+                    responses: {
+                        '200': {
+                            description: 'Video deleted successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    video: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            title: {
+                                                                type: 'string'
+                                                            },
+                                                            description: {
+
+                                                                type: 'string'
+                                                            },
+                                                            videoUrl: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
             '/videos/updatevideo': {
@@ -512,7 +632,7 @@ export const options = {
                     ],
                 }
             },
-            '/videos/getvideos/all': {
+            '/videos/getvideos': {
                 get: {
                     tags: ['Get All Videos'],
                     summary: 'Api for getting all videos',
@@ -526,24 +646,340 @@ export const options = {
                             type: 'string'
                         },
                     ],
+                    responses: {
+                        '200': {
+                            description: 'Videos fetched successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    videos: {
+                                                        type: 'array',
+                                                        items: {
+                                                            type: 'object',
+                                                            properties: {
+                                                                id: {
+
+                                                                    type: 'string'
+                                                                },
+                                                                title: {
+                                                                    type: 'string'
+                                                                },
+                                                                description: {
+                                                                    type: 'string'
+                                                                },
+                                                                videoUrl: {
+                                                                    type: 'string'
+                                                                },
+                                                                createdAt: {
+                                                                    type: 'string'
+                                                                },
+                                                                updatedAt: {
+                                                                    type: 'string'
+                                                                },
+                                                                __v: {
+                                                                    type: 'number'
+                                                                },
+                                                                userId: {
+                                                                    type: 'string'
+                                                                },
+                                                                uploadedBy: {
+                                                                    type: 'string'
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                 }
             },
-            '/videos/getvideo/:id': {
+            // get a vide by id
+            '/videos/getvideo/{id}': {
                 get: {
-                    tags: ['Get Video'],
-                    summary: 'Api for getting a video',
-                    description: 'This is a get video route',
+                    tags: ['Get Video By Id'],
+                    summary: 'Api for getting a video by id',
+                    description: 'This is a get video by id route',
                     parameters: [
                         {
                             name: 'id',
-                            in: 'url',
+                            in: 'path',
                             description: 'Id of the video',
                             required: true,
                             type: 'string'
                         },
                     ],
+                    responses: {
+                        '200': {
+                            description: 'Video fetched successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    video: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            title: {
+                                                                type: 'string'
+                                                            },
+                                                            description: {
+                                                                type: 'string'
+                                                            },
+                                                            videoUrl: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            },
+                                                            userId: {
+                                                                type: 'string'
+                                                            },
+                                                            uploadedBy: {
+                                                                type: 'string'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             },
+            'commnets/addcomment': {
+                post: {
+                    tags: ['Add Comment'],
+                    summary: 'Api for adding a comment on a video',
+                    description: 'This is a add comment route',
+                    parameters: [
+                        {
+                            name: 'title',
+                            in: 'body',
+                            description: 'Title of the video',
+                            required: true,
+                            type: 'string'
+                        },
+                        {
+                            name: 'description',
+                            in: 'body',
+                            description: 'Description of the video',
+                            required: false,
+                            type: 'string'
+                        },
+                        {
+                            name: 'videoUrl',
+                            in: 'body',
+                            description: 'Video Url of the video',
+                            required: false,
+                            type: 'string'
+                        },
+                    ],
+                    responses: {
+                        '200': {
+                            description: 'Video added successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    video: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            title: {
+                                                                type: 'string'
+                                                            },
+                                                            description: {
+                                                                type: 'string'
+                                                            },
+                                                            videoUrl: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            },
+                                                            userId: {
+                                                                type: 'string'
+                                                            },
+                                                            uploadedBy: {
+                                                                type: 'string'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            '/comment/updatecomment/{id}': {
+                put: {
+                    tags: ['Update Comment'],
+                    summary: 'Api for updating a comment on a video',
+                    description: 'This is a update comment route',
+                    parameters: [
+                        {
+                            name: 'id',
+                            in: 'path',
+                            description: 'Id of the comment',
+                            required: true,
+                            type: 'string'
+                        },
+                        {
+                            name: 'title',
+                            in: 'body',
+                            description: 'Title of the video',
+                            required: true,
+                            type: 'string'
+                        },
+                        {
+                            name: 'description',
+                            in: 'body',
+                            description: 'Description of the video',
+                            required: false,
+                            type: 'string'
+                        },
+                        {
+                            name: 'videoUrl',
+                            in: 'body',
+                            description: 'Video Url of the video',
+                            required: false,
+                            type: 'string'
+                        },
+                    ],
+                    responses: {
+                        '200': {
+                            description: 'Video updated successfully',
+                            content: {
+                                'application/json': {
+                                    schema: {
+                                        type: 'object',
+                                        properties: {
+                                            error: {
+                                                type: 'string'
+                                            },
+                                            status: {
+                                                type: 'number'
+                                            },
+                                            message: {
+                                                type: 'string'
+                                            },
+                                            data: {
+                                                type: 'object',
+                                                properties: {
+                                                    video: {
+                                                        type: 'object',
+                                                        properties: {
+                                                            id: {
+                                                                type: 'string'
+                                                            },
+                                                            title: {
+                                                                type: 'string'
+                                                            },
+                                                            description: {
+                                                                type: 'string'
+                                                            },
+                                                            videoUrl: {
+                                                                type: 'string'
+                                                            },
+                                                            createdAt: {
+                                                                type: 'string'
+                                                            },
+                                                            updatedAt: {
+                                                                type: 'string'
+                                                            },
+                                                            __v: {
+                                                                type: 'number'
+                                                            },
+                                                            userId: {
+                                                                type: 'string'
+                                                            },
+                                                            uploadedBy: {
+                                                                type: 'string'
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+
         }
     },
     apis: ['./routes/*.js']

@@ -1,3 +1,4 @@
+import { createRequire } from 'module';
 import mongoose from "mongoose"
 import express from "express"
 import dotenv from 'dotenv'
@@ -11,7 +12,8 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import swaggerJSdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
-import {options} from './swagger.js'
+import { options } from './swagger.js'
+
 
 const app = express();
 
@@ -62,9 +64,26 @@ function connectToDatabase() {
         })
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     connectToDatabase();
+
+});
+
+const io = createRequire(import.meta.url)('socket.io')(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+})
+
+io.on('connection', (socket) => {
+    console.log('User connected');
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    })
 }
 )
+
+
 

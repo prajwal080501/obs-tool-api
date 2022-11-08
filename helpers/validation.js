@@ -1,9 +1,9 @@
-import {body, validationResult} from "express-validator";
+import { body, validationResult } from "express-validator";
 
 export const validateRegisterRequest = [
     body("name", "Name is required").not().isEmpty(),
     body("email", "Please enter a valid email").isEmail(),
-    body("password", "Please enter a password with 6 or more characters").isLength({min: 6})
+    body("password", "Please enter a password with 6 or more characters").isLength({ min: 6 })
 ];
 
 export const validateLoginRequest = [
@@ -24,4 +24,5 @@ export const validateComment = [
     body("comment", "Comment is required").not().isEmpty(),
     body("videoId", "VideoId is required").not().isEmpty(),
     body("categoryId", "Category is required").not().isEmpty(),
+    body("rating", "Rating is required").not().isEmpty(),
 ];
