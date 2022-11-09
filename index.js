@@ -14,6 +14,10 @@ import swaggerJSdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import webpush from "web-push"
 import { options } from './swagger.js'
+import { Server } from "socket.io";
+
+
+
 
 
 const app = express();
@@ -65,35 +69,27 @@ function connectToDatabase() {
         })
 }
 
+const io = new Server({
+    cors: {
+        origin: "http://localhost:3000",
+    }
+});
+
+io.on("connection", (socket) => {
+    console.log("New client connected");
+    socket.on("disconnect", () => {
+        console.log("user disconnected");
+    });
+});
+
+io.listen(5000  );
+
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     connectToDatabase();
 
 });
 
-const io = createRequire(import.meta.url)('socket.io')(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-})
-
-io.on('connection', (socket) => {
-    console.log('User connected');
-    socket.on('disconnect', () => {
-        console.log('User disconnected');
-    })
-}
-)
-const privateVapidKey = "FFThIFKsimwq00FU-f3tKP5fDCIRgXfrruOcSZap--Q"
-const publicVapidKey = "BI18JfwP0NUMt50W5orhGMzLKh7Wy5_fvbwBU92sGBma91yYNNbeTcGcujRrJsIBoYzcuqVILPR7SktG2MPSUeU";
-
-webpush.setVapidDetails(
-    "mailto:praju.ladkat@gmai.com",
-    publicVapidKey,
-    privateVapidKey
-
-)
 
 
 
