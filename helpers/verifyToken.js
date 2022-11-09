@@ -4,10 +4,13 @@ export const verifyToken = (req, res, next) => {
 
     const token = req.cookies.token;
     if (!token) {
-        return res.status(401).json({ errors: [{ 
-            status: "Error",
-            code: 401,
-            msg: "Not authorized" }] })
+        return res.status(401).json({
+            errors: [{
+                status: "Error",
+                code: 401,
+                msg: "Not authorized"
+            }]
+        })
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
@@ -26,8 +29,6 @@ export const verifyToken = (req, res, next) => {
         res.status(500).json({ errors: [{ msg: "Server error" }] })
     }
 }
-
-
 
 export const verifyForgetPasswordToken = (req, res) => {
     const token = req.query;

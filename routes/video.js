@@ -4,7 +4,7 @@ import { addVideo, deleteVideo, updateVideo, getVideos, getVideo } from "../cont
 import { validateVideoRequest } from '../helpers/validation.js';
 const router = express.Router();
 
-router.post("/addvideo", validateVideoRequest, addVideo);
+router.post("/addvideo", verifyToken, validateVideoRequest, addVideo);
 router.delete("/deletevideo/:id", verifyToken, deleteVideo);
 router.put("/updatevideo/:id", verifyToken, updateVideo);
 router.get("/getvideos", getVideos);
