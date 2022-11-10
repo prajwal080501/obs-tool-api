@@ -34,7 +34,9 @@ export const Login = async (req, res) => {
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 })
             const { password, ...others } = user._doc;
             res.cookie("token", token, {
-                httpOnly: true
+                httpOnly: true,
+                // add samesite none
+                sameSite: "none",
                 //  add token to other
             }).json(createError('Success', 200, 'Login Successful', others));
 

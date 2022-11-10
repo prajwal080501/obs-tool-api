@@ -29,7 +29,7 @@ const privteVapidKey = 'IT0TZT0AUicBHyKUZrK9zhDvGMoX-qYoe6i00PCGUqY';
 webpush.setVapidDetails('mailto:iamprajwalladkat@gmail.com', publicVapidKey, privteVapidKey);
 
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://observation-tool.herokuapp.com',
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
 }));
