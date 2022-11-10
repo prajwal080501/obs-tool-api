@@ -7,7 +7,7 @@ import { createError } from "../helpers/createError.js"
 dotenv.config()
 import { validationResult } from 'express-validator';
 import { sendEmail } from "../helpers/sendMail.js"
-
+import { io } from "../index.js"
 
 export const Login = async (req, res) => {
     const errors = validationResult(req);
@@ -28,7 +28,7 @@ export const Login = async (req, res) => {
             }
             const payload = {
                 user: {
-                    id: user._id
+                    id: user._id,
                 }
             }
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 })

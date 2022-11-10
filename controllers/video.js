@@ -55,7 +55,6 @@ export const updateVideo = async (req, res) => {
 
 export const deleteVideo = async (req, res) => {
     try {
-        console.log(req.user);
         const video = await Video.findById(req.params.id);
         if (!video) {
             res.json(createError('Failed', 400, 'Video not found', null));
@@ -90,6 +89,16 @@ export const getVideo = async (req, res) => {
 export const getVideos = async (req, res) => {
     try {
         const videos = await Video.find({});
+        return res.status(200).json(videos);
+    } catch (error) {
+        res.status(500).json(createError('Failed', 500, 'Server Error', null));
+    }
+}
+
+
+export const getMyVideos = async (req, res) => {
+    try {
+        const videos = await Video.find({ userId: req.user.user.id });
         return res.status(200).json(videos);
     } catch (error) {
         res.status(500).json(createError('Failed', 500, 'Server Error', null));

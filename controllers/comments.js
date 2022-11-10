@@ -5,6 +5,7 @@ import { createError } from '../helpers/createError.js';
 import User from './../models/User.js';
 import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
+import { io } from "../index.js"
 export const addComment = async (req, res) => {
 
     try {
@@ -24,7 +25,18 @@ export const addComment = async (req, res) => {
                 ...req.body
             });
             const comment = await newComment.save();
+            io.emit('newComment', comment);
             res.json(createError('Success', 200, 'Comment added successfully', comment));
+
+
+            const payload = JSON.stringify({
+                title: 'New Comment',
+                body: 'New comment added to your video'
+            });
+
+            // pass object into sendNotification
+            webpush.sendNotification(comment, payload).catch(error => console.error(error));
+
 
         }
     } catch (error) {

@@ -20,15 +20,11 @@ const UserSchema = new mongoose.Schema({
         options: ["teacher", "admin"],
         default: "teacher"
     },
-    notifications: {
-        type: Array,
-        default: []
-    },
     resetToken: {
         type: String,
         default: ""
     },
-}, {timestamps: true});
+}, { timestamps: true });
 
 const User = mongoose.model("User", UserSchema);
 

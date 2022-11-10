@@ -12,15 +12,21 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 import swaggerJSdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
-import webpush from "web-push"
+import { fileURLToPath } from 'url';
 import { options } from './swagger.js'
 import { Server } from "socket.io";
-
-
-
-
-
+// import webpush 
+import webpush from 'web-push'
+import path from 'path';
 const app = express();
+
+app.use(express.static(path.join(path.dirname(fileURLToPath(import.meta.url)), 'client')));
+
+const publicVapidKey = 'BB9UJpBDbzz_1MjbcyML_QEWyy3f5sHxX0WGn2BKmRHtKwSKtLXFTqHzcgvH8qfqjekxuFrK6tm4HDFCA1AvalY';
+const privteVapidKey = 'IT0TZT0AUicBHyKUZrK9zhDvGMoX-qYoe6i00PCGUqY';
+
+
+webpush.setVapidDetails('mailto:iamprajwalladkat@gmail.com', publicVapidKey, privteVapidKey);
 
 app.use(cors({
     origin: 'http://localhost:3000',
@@ -69,7 +75,7 @@ function connectToDatabase() {
         })
 }
 
-const io = new Server({
+export const io = new Server({
     cors: {
         origin: "http://localhost:3000",
     }
@@ -82,7 +88,7 @@ io.on("connection", (socket) => {
     });
 });
 
-io.listen(5000  );
+io.listen(5000);
 
 const server = app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
