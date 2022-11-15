@@ -1,34 +1,29 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 export const verifyToken = (req, res, next) => {
-
-    const token = req.cookies.token;
-    if (!token) {
+    const authHeader = req.headers.token;
+    if (!authHeader) {
         return res.status(401).json({
-            errors: [{
-                status: "Error",
-                code: 401,
-                msg: "Not authorized"
-            }]
-        })
+            status: "error",
+            code: 401,
+            msg: "Access denied"
+        });
     }
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    else {
+        const token = authHeader.split(" ")[1];
+        console.log(token);
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
             if (err) {
-                return res.status(401).json({ errors: [{ msg: "Token present but not valid" }] })
+                return res.status(403).json({
+                    status: "error",
+                    code: 403,
+                    msg: "Invalid token"
+                });
             }
-            else {
-                req.user = user;
-                console.log(req.user, "from verify token");
-                console.log(req.user.user.id)
-                next();
-            }
-
-        })
-    }
-    catch (err) {
-        console.log(err);
-        res.status(500).json({ errors: [{ msg: "Server error" }] })
+            req.user = user;
+            console.log(user);
+            next();
+        });
     }
 }
 

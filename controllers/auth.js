@@ -33,13 +33,10 @@ export const Login = async (req, res) => {
             }
             const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 360000 })
             const { password, ...others } = user._doc;
-            res.cookie("token", token, {
-                httpOnly: true,
-                // add samesite none
-                sameSite: "none",
-                //  add token to other
-            }).json(createError('Success', 200, 'Login Successful', others));
-
+            // add token to response
+        //   send token to frontend as a response
+            res.json(createError('Success', 200, 'Login successful', { token, ...others }));
+            
         }
         catch (err) {
             console.log(err);
