@@ -8,7 +8,7 @@ router.post("/addvideo", verifyToken, validateVideoRequest, addVideo);
 router.delete("/deletevideo/:id", verifyToken, deleteVideo);
 router.put("/updatevideo/:id", verifyToken, updateVideo);
 router.get("/getvideos", getVideos);
-router.get("/getvideo/:id", verifyToken, getVideo);
+router.get("/getvideo/:id", getVideo);
 router.get("/getmyvideos", verifyToken, getMyVideos);
 
 
