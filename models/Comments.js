@@ -22,7 +22,10 @@ const CommentSchema = new mongoose.Schema({
     rating: {
         type: Number,
         default: 0,
-    }
+    },
+    videoTime: {
+        type: Number,
+    },
 }, { timestamps: true });
 
 const Comment = mongoose.model("Comment", CommentSchema);

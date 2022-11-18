@@ -6,7 +6,6 @@ import User from './../models/User.js';
 import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
 import { io } from "../index.js"
-import Reply from './../models/Reply.js';
 export const addComment = async (req, res) => {
 
     try {
@@ -48,19 +47,17 @@ export const addComment = async (req, res) => {
 export const deleteComment = async (req, res) => {
     try {
         const comment = await Comments.findById(req.params.id);
-        const video = await Video.findById(res.params.id);
         if (!comment) {
             res.json(createError('Failed', 400, 'Comment not found', null));
         }
-        if (comment.userId === req.user.user.id || video.userId === req.user.user.id) {
-            const deletedComment = await Comments.findByIdAndDelete(req.params.id);
+        else {
+            const deletedComment = await Comments.findByIdAndRemove(req.params.id);
             res.json(createError('Success', 200, 'Comment deleted successfully', deletedComment));
         }
-        else {
-            res.json(createError('Failed', 400, 'You are not authorized to delete this comment', null));
-        }
-    } catch (error) {
-        res.status(500).json(error);
+
+    }
+    catch (error) {
+        res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
 
@@ -97,26 +94,7 @@ export const getComments = async (req, res) => {
 }
 
 export const replyComment = async (req, res) => {
-    try {
-        const comment = await Comments.findById(req.params.id);
-        if (!comment) {
-            res.json(createError('Failed', 400, 'Comment not found', null));
-        }
-        else {
-            const user = await User.findById(req.user.user.id);
-            const newReply = new Reply({
-                userId: req.user.user.id,
-                commentId: req.params.id,
-                replyBy: user.name,
-                ...req.body
-            });
-            const reply = await newReply.save();
-            res.json(createError('Success', 200, 'Reply added successfully', reply));
-        }
-    }
-    catch (error) {
-        res.json(createError('Failed', 500, 'Server Error', null));
-    }
+    
 }
 
 
@@ -137,7 +115,8 @@ export const getRepliesForComment = async (req, res) => {
 export const getCommentsByCategory = async (req, res) => {
     //    get comments for a category
     try {
-
+        const comments = await Comments.find({ categoryId: req.params.id });
+        res.json(createError('Success', 200, 'Comments fetched successfully', comments));
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));

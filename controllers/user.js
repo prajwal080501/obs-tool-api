@@ -18,8 +18,9 @@ export const remove = async (req, res) => {
 }
 
 export const getUser = async (req, res) => {
-    const user = await User.findById(req.params.id);
+   const user = await User.findById(req.params.id);
     res.json(createError('Success', 200, 'User fetched successfully', user));
 }
+
 
 
