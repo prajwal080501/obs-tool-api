@@ -6,7 +6,7 @@ import User from './../models/User.js';
 import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
 import { io } from "../index.js"
-import Reply from './../models/Reply';
+import Reply from './../models/Reply.js';
 export const addComment = async (req, res) => {
 
     try {
@@ -109,6 +109,7 @@ export const replyComment = async (req, res) => {
                 res.json(createError('Failed', 400, 'Comment not found', null));
             }
             const user = await User.findById(req.user.user.id);
+            console.log(user.name, comment.commentBy);
             const newReply = new Reply({
                 userId: req.user.user.id,
                 commentId: req.params.id,

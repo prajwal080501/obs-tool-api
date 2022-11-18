@@ -5,6 +5,10 @@ const ReplySchema = mongoose.Schema({
         type: String,
         required: true
     },
+    // videoId: {
+    //     type: String,
+    //     required: true
+    // },
     commentId: {
         type: String,
         required: true
