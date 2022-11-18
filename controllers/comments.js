@@ -6,7 +6,7 @@ import User from './../models/User.js';
 import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
 import { io } from "../index.js"
-import Reply from './../models/Reply.js';
+// import Reply from './../models/Reply.js';
 export const addComment = async (req, res) => {
 
     try {
@@ -96,31 +96,25 @@ export const getComments = async (req, res) => {
     }
 }
 
-
 export const replyComment = async (req, res) => {
+    // implement nested comment and reply system
     try {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            res.json(createError(400, 'Failed to add reply', errors.array().map(error => error.msg), null));
+            res.json(createError(400, 'Failed to add comment', errors.array().map(error => error.msg), null));
         }
         else {
             const comment = await Comments.findById(req.params.id);
-            if (!comment) {
-                res.json(createError('Failed', 400, 'Comment not found', null));
-            }
             const user = await User.findById(req.user.user.id);
-            console.log(user.name, comment.commentBy);
-            const newReply = new Reply({
+            const reply = new Comments({
                 userId: req.user.user.id,
-                commentId: req.params.id,
-                replyBy: user.name,
-                replyTo: comment.commentBy,
+                commentBy: user.name,
                 ...req.body
             });
-            const reply = await newReply.save();
-            res.json(createError('Success', 200, 'Reply added successfully', reply));
+            comment.replies.push(reply);
         }
-    } catch (error) {
+    }
+    catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
@@ -128,13 +122,14 @@ export const replyComment = async (req, res) => {
 
 export const getRepliesForComment = async (req, res) => {
     try {
-        const replies = await Reply.find({ commentId: req.params.id });
-        res.json(createError('Success', 200, 'Replies fetched successfully', replies));
+        const comment = await Comments.findById(req.params.id);
+        res.json(createError('Success', 200, 'Replies fetched successfully', comment.replies));
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
+
 
 
 export const getCommentsByCategory = async (req, res) => {
@@ -147,22 +142,11 @@ export const getCommentsByCategory = async (req, res) => {
     }
 }
 
-export const getCommentsWithReplies = async (req, res) => {
-    //    get comments with replies for a video
+export const getCommentWithReplies = async (req, res) => {
+    //    get comment with replies
     try {
-        const comments = await Comments.find({ videoId: req.params.id });
-        const commentsWithReplies = await Promise.all(comments.map(async (comment) => {
-            const replies = await Reply.find({ 
-                comment,
-                commentId: comment._id
-            });
-            return {
-                ...comment._doc,
-                replies
-            }
-
-    }));
-        res.json(createError('Success', 200, 'Comments fetched successfully', commentsWithReplies));
+        const comment = await Comments.findById(req.params.id);
+        res.json(createError('Success', 200, 'Comment fetched successfully', comment));
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
