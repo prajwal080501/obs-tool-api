@@ -10,7 +10,7 @@ router.post("/reply/:id", verifyToken, replyComment);
 router.get("/getreplies/:id", getRepliesForComment);
 router.put("/updatecomment/:id", verifyToken, updateComment);
 router.delete("/deletecomment/:id", verifyToken, deleteComment);
-router.get("/getcommentss/:id", verifyToken, getComments);
+router.get("/getcomments/:id", verifyToken, getComments);
 router.get("/getcommentsbycategory/:id", verifyToken, getCommentsByCategory);
-
+router.get("/getreplies/:id", getRepliesForComment);
 export default router;

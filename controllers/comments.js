@@ -6,7 +6,7 @@ import User from './../models/User.js';
 import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
 import { io } from "../index.js"
-// import Reply from './../models/Reply.js';
+import Reply from './../models/Reply.js';
 export const addComment = async (req, res) => {
 
     try {
@@ -97,22 +97,19 @@ export const getComments = async (req, res) => {
 }
 
 export const replyComment = async (req, res) => {
-    // implement nested comment and reply system
     try {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            res.json(createError(400, 'Failed to add comment', errors.array().map(error => error.msg), null));
+        const comment = await Comments.findById(req.params.id);
+        if (!comment) {
+            res.json(createError('Failed', 400, 'Comment not found', null));
         }
-        else {
-            const comment = await Comments.findById(req.params.id);
-            const user = await User.findById(req.user.user.id);
-            const reply = new Comments({
-                userId: req.user.user.id,
-                commentBy: user.name,
-                ...req.body
-            });
-            comment.replies.push(reply);
-        }
+        const user = await User.findById(req.user.user.id);
+        const newReply = new Reply({
+            userId: req.user.user.id,
+            commentId: req.params.id,
+            replyBy: user.name,
+            replyTo: comment.commentBy,
+            ...req.body
+        });
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
@@ -122,8 +119,10 @@ export const replyComment = async (req, res) => {
 
 export const getRepliesForComment = async (req, res) => {
     try {
-        const comment = await Comments.findById(req.params.id);
-        res.json(createError('Success', 200, 'Replies fetched successfully', comment.replies));
+        const replies = await Reply
+            .find({ commentId: req.params.id })
+            .populate('userId', 'name');
+        res.json(createError('Success', 200, 'Replies fetched successfully', replies));
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
