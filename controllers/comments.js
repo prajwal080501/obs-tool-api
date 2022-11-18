@@ -6,6 +6,7 @@ import User from './../models/User.js';
 import webpush from 'web-push';
 import { body, validationResult } from "express-validator";
 import { io } from "../index.js"
+import Reply from './../models/Reply';
 export const addComment = async (req, res) => {
 
     try {
@@ -98,27 +99,35 @@ export const getComments = async (req, res) => {
 
 export const replyComment = async (req, res) => {
     try {
-        const comment = await Comments.findById(req.params.id);
-        const user = await User.findById(req.user.user.id);
-        const newComment = new Comments({
-            userId: req.user.user.id,
-            category: comment.category,
-            commentBy: user.name,
-            replyTo: comment._id,
-            ...req.body
-        });
-        const reply = await newComment.save();
-        res.json(createError('Success', 200, 'Reply added successfully', reply));
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            res.json(createError(400, 'Failed to add reply', errors.array().map(error => error.msg), null));
+        }
+        else {
+            const comment = await Comments.findById(req.params.id);
+            if (!comment) {
+                res.json(createError('Failed', 400, 'Comment not found', null));
+            }
+            const user = await User.findById(req.user.user.id);
+            const newReply = new Reply({
+                userId: req.user.user.id,
+                commentId: req.params.id,
+                replyBy: user.name,
+                replyTo: comment.commentBy,
+                ...req.body
+            });
+            const reply = await newReply.save();
+            res.json(createError('Success', 200, 'Reply added successfully', reply));
+        }
     } catch (error) {
-
+        res.json(createError('Failed', 500, 'Server Error', null));
     }
 }
 
 
 export const getRepliesForComment = async (req, res) => {
-    //    get replies for a comment
     try {
-        const replies = await Comments.find({ replyTo: req.params.id });
+        const replies = await Reply.find({ commentId: req.params.id });
         res.json(createError('Success', 200, 'Replies fetched successfully', replies));
     }
     catch (error) {
