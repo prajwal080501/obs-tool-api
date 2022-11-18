@@ -102,14 +102,17 @@ export const replyComment = async (req, res) => {
         if (!comment) {
             res.json(createError('Failed', 400, 'Comment not found', null));
         }
-        const user = await User.findById(req.user.user.id);
-        const newReply = new Reply({
-            userId: req.user.user.id,
-            commentId: req.params.id,
-            replyBy: user.name,
-            replyTo: comment.commentBy,
-            ...req.body
-        });
+        else {
+            const user = await User.findById(req.user.user.id);
+            const newReply = new Reply({
+                userId: req.user.user.id,
+                commentId: req.params.id,
+                replyBy: user.name,
+                ...req.body
+            });
+            const reply = await newReply.save();
+            res.json(createError('Success', 200, 'Reply added successfully', reply));
+        }
     }
     catch (error) {
         res.json(createError('Failed', 500, 'Server Error', null));
