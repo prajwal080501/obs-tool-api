@@ -1,6 +1,6 @@
 import express from "express";
 import {body, validationResult} from "express-validator";
-import { addComment, deleteComment, getComments, getCommentsByCategory, getRepliesForComment, replyComment, updateComment } from "../controllers/comments.js";
+import { addComment, deleteComment, getComments, getCommentsByCategory, getCommentsWithReplies, getRepliesForComment, replyComment, updateComment } from "../controllers/comments.js";
 import { validateComment } from "../helpers/validation.js";
 import {verifyToken} from "../helpers/verifyToken.js";
 const router = express.Router();
@@ -10,7 +10,8 @@ router.post("/reply/:id", verifyToken, replyComment);
 router.get("/getreplies/:id", getRepliesForComment);
 router.put("/updatecomment/:id", verifyToken, updateComment);
 router.delete("/deletecomment/:id", verifyToken, deleteComment);
-router.get("/getcomments/:id", verifyToken, getComments);
-router.get("getcommentsbycategory/:id", verifyToken, getCommentsByCategory);
+router.get("/getcommentss/:id", verifyToken, getComments);
+router.get("/getcommentsbycategory/:id", verifyToken, getCommentsByCategory);
+router.get("/getcommentswithreplies/:id", getCommentsWithReplies);
 
 export default router;

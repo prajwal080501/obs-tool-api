@@ -147,15 +147,24 @@ export const getCommentsByCategory = async (req, res) => {
     }
 }
 
-// get all comments with replies for a video and display the comments and display the comments and the replies below the comment in respective order
-// export const getCommentsWithReplies = async (req, res) => {
-//     try {
-//         const comments = await Comments.find({ videoId: req.params.id, replyTo: null });
-//         console.log(comments);
-//         const replies = await Comments.find({ videoId: req.params.id, replyTo: { $ne: null } });
-//         console.log(replies);
-//     }
-//     catch (error) {
-//         res.json(createError('Failed', 500, 'Server Error', null));
-//     }
-// }
+export const getCommentsWithReplies = async (req, res) => {
+    //    get comments with replies for a video
+    try {
+        const comments = await Comments.find({ videoId: req.params.id });
+        const commentsWithReplies = await Promise.all(comments.map(async (comment) => {
+            const replies = await Reply.find({ 
+                comment,
+                commentId: comment._id
+            });
+            return {
+                ...comment._doc,
+                replies
+            }
+
+    }));
+        res.json(createError('Success', 200, 'Comments fetched successfully', commentsWithReplies));
+    }
+    catch (error) {
+        res.json(createError('Failed', 500, 'Server Error', null));
+    }
+}
